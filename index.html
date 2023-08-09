@@ -1,0 +1,125 @@
+<html>
+<head>
+	<meta charset="utf8">
+
+	<script type="text/javascript">
+	
+	
+		function Listar(){
+			// A variável "dados" conterá todos os campos do <form id="form1">
+			var dados = $('#form1').serialize(); // TODOS OS CAMPOS DO <form> DEVEM TER 'name='
+			
+			$.ajax({
+				type: "POST",
+                url: "arquivo.php",
+				data: dados,
+				dataType: 'json',
+				                
+                success: function(meu_json)
+				{
+					
+					var valores = meu_json;          // Vem do arquivo.php
+					var lista = valores.empregados;  // Pega os dados dos "empregados"
+                  
+					var tabela = document.getElementById("tabela1");
+					for(x=0;x<lista.length;x++)
+					{                      
+						if (lista[x].matricula!="0")
+						{
+							var numeroLinhas = tabela.rows.length
+							var linha = tabela.insertRow(numeroLinhas);
+							var coluna1 = linha.insertCell(0);
+							var coluna2 = linha.insertCell(1);  
+							coluna1.innerHTML = lista[x].matricula;
+							coluna2.innerHTML = lista[x].nome;
+						}else{
+							alert("Matrícula Excluída")
+						}
+					}      
+
+				},
+				error: function(xhr, status, error) {
+					// Aqui poderíamos preencher uma <div> com o innerHTML por exemplo
+            		console.error('Ocorreu um erro ao enviar os dados: ' + error);
+          		},
+				beforeSend: function(xhr) {
+					// Faz algo antes do envio, como exibir uma animação por exemplo.
+				},
+				complete: function(xhr, status) {
+					// Faz algo após a conclusão, como ocultar uma animação por exemplo. 
+					// Vai ser executado mesmo se ocorrer um erro.
+				},
+				timeout: 5000    // Define um tempo limite de 5 segundos (5000 milissegundos)
+			});
+			
+			
+		}
+
+
+		function Deletar(){
+			// A variável "dados" conterá todos os campos do <form id="form1">
+			var dados = $('#form1').serialize(); // TODOS OS CAMPOS DO <form> DEVEM TER 'name='
+			
+			$.ajax({
+				type: "POST",
+                url: "deletar.php",
+				data: dados,
+				dataType: 'json',
+				                
+                success: function(meu_json)
+				{
+					
+					
+					alert("Matrícula Excluída")
+					
+					    
+
+				},
+				error: function(xhr, status, error) {
+					// Aqui poderíamos preencher uma <div> com o innerHTML por exemplo
+            		console.error('Ocorreu um erro ao enviar os dados: ' + error);
+          		},
+				beforeSend: function(xhr) {
+					// Faz algo antes do envio, como exibir uma animação por exemplo.
+				},
+				complete: function(xhr, status) {
+					// Faz algo após a conclusão, como ocultar uma animação por exemplo. 
+					// Vai ser executado mesmo se ocorrer um erro.
+				},
+				timeout: 5000    // Define um tempo limite de 5 segundos (5000 milissegundos)
+			});
+			
+			
+		}
+	</script>
+</head>
+<body>
+
+	<form method="post" action="" id="form1">
+
+		Matricula:   <input type="text"   id="matricula"  name="matricula"  value="" />
+		Nome: 		 <input type="text"   id="nome"  name="nome"  value="" />
+
+		<input type="button" name="inserir" value="Enviar" onclick="Listar();" />
+		<input type="button" name="excluir" value="Excluir" onclick="Deletar();" />
+
+	</form>
+	<br>
+	<table align="center" width="400px" border="1" id="tabela1">
+        <tr>
+            <td> MATRÍCULA </td>  <td> NOME </td>
+        </tr>
+
+
+
+
+
+
+
+
+		
+    </table>
+	
+</body>
+<script type="text/javascript" src="jquery-1.8.2.min.js"></script>
+</html>
